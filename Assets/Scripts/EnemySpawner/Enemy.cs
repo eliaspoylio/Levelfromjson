@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private float speed = 1f;
+    public float speed = 1f;
+    private IEnumerator coroutine;
 
     // Start is called before the first frame update
     void Start()
@@ -17,8 +18,28 @@ public class Enemy : MonoBehaviour
         MoveEnemy();
     }
 
-    public void MoveEnemy()
+    private void MoveEnemy()
     {
         transform.position = new Vector2(transform.position.x, transform.position.y + -speed * Time.deltaTime);
     }
+
+    public void Destroy(float delay)
+    {
+        Destroy(gameObject, delay);
+    }
+
+    public IEnumerator WaitAndMove(float delay, float yPos)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(delay);
+            MoveUp(yPos);
+        }
+    }
+
+    private void MoveUp(float yPos)
+    {
+        transform.position = new Vector3(transform.position.x, yPos, transform.position.z);
+    }
+
 }
